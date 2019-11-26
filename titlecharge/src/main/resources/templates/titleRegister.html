@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	  layout:decorator="layoutDefault">
+	<head>
+		<title>Spring - New Title</title>
+	</head>
+	<section layout:fragment="content">
+		<form class="form-horizontal" th:action="@{/title}" method="POST" th:object=${title}>
+			<div layout:insert="message"></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="clearfix">
+						<h1 class="panel-title my-title">Add New Title</h1>
+						<a class="btn btn-link my-link-title" th:href="@{/title}">See All Titles</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					<input type="hidden" th:field="*{code}"/>
+					<div class="form-group" th:classappend="${#fields.hasErrors('description')} ? 'has-error'">
+						<label for="description" class="col-sm-2 control-label">Description</label>
+						<div class="col-sm-4">
+							<input type="text" autocomplete="off" class="form-control" id="description" th:field="*{description}"/>
+						</div>
+					</div>
+					<div class="form-group" th:classappend="${#fields.hasErrors('deadline')} ? 'has-error'">
+						<label for="deadline" class="col-sm-2 control-label">Deadline</label>
+						<div class="col-sm-2">
+							<input type="text" autocomplete="off" class="form-control" id="deadline" th:field="*{deadline}"
+							data-provide="datepicker" data-date-format="dd/mm/yyyy" data-language="pt-BR" data-date-autoclose="true" data-date-today-highlight="true"/>
+						</div>
+					</div>
+					<div class="form-group" th:classappend="${#fields.hasErrors('value')} ? 'has-error'">
+						<label for="value" class="col-sm-2 control-label">Value</label>
+						<div class="col-sm-2">
+							<input type="text" autocomplete="off" class="form-control js-currency" id="value" th:field="*{value}"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="status" class="col-sm-2 control-label">Status</label>
+						<div class="col-sm-2">
+							<select class="form-control" name="status">
+								<option th:each="status : ${allTitleStatus}" th:value="${status}" th:text="${status.description}" th:field="*{status}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-success">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+</html>

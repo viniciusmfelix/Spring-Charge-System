@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layoutDefault">
+	<head>
+		<title>Spring - Titles Search</title>
+	</head>
+	<section layout:fragment="content">
+		<div layout:insert="messageOnly"></div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="clearfix">
+					<h1 class="panel-title my-title">Title Search</h1>
+					<a class="btn btn-link my-link-title" th:href="@{/title/new}">New Title</a>
+				</div>
+			</div>
+			<div class="panel panel-body">
+				<form method="GET" class="form-horizontal" th:action="@{/title}" th:object="${filter}">
+					<div class="form-group">
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input class="form-control" th:field="*{description}" placeholder="Which title are you looking for?" name="description" autofocus="autofocus"/>
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-default">
+										<i class="glyphicon glyphicon-search">
+										</i>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th class="text-center col-md-1">#</th>
+								<th>Description</th>
+								<th class="text-center col-md-2">Deadline</th>
+								<th class="text-right col-md-2">Value</th>
+								<th class="text-center col-md-2">Status</th>
+								<th class="col-md-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="title : ${titles}">
+								<td class="text-center" th:text="${title.code}"></td>
+								<td th:text="${title.description}"></td>
+								<td class="text-center" th:text="${{title.deadline}}"></td>
+								<td class="text-right" th:text="|R$ ${{title.value}}|"></td>
+								<td class="text-center" th:attr="data-role=${title.code}">
+									<span class="label" th:text="${title.status.description}"
+									th:classappend="${title.pending ? 'label-warning' : 'label-success'}"></span>
+								</td>
+								<td class="text-center">
+									<a class="btn btn-link btn-xs" th:href="@{/title/{code}(code = ${title.code})}" title="Edit" rel="tooltip" data-placement="top">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</a>
+									<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#deleteConfirmation"
+									th:attr="data-code=${title.code}, data-description=${title.description}" title="Delete" rel="tooltip" data-placement="top">
+										<span class="glyphicon glyphicon-remove" th:attr="data-code=${title.code}"></span>
+									</a>
+									<a class="btn btn-link btn-xs js-update-status" title="Recieve" rel="tooltip" data-placement="top"
+									th:if="${title.pending}" th:href="@{/title/{code}/recieve(code=${title.code})}" th:attr="data-code=${title.code}">
+										<span class="glyphicon glyphicon-check"></span>
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6" class="text-center" th:if="${#lists.isEmpty(titles)}">No titles available right now.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div layout:insert="deleteConfirm">
+		</div>
+	</section>
+</html>
