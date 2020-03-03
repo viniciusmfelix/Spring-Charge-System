@@ -7,7 +7,7 @@ Basic system made only with study purposes, distribution and usage are free an u
 - [x] Spring MVC
 - [x] Spring Boot
 - [x] Spring IoC
-- [x] Spring Data JPA with Hybernate
+- [x] Spring Data JPA with Hibernate
 - [x] Maven
 - [x] Thymeleaf
 - [x] jQuery
